@@ -275,5 +275,18 @@
 
     function enviarFactura(e) {
       e.preventDefault();
-      const suc = document.getElementById('fac-sucursal').value;
+      const suc = document.getElementById('fac-sucursal').value;const fol = document.getElementById('fac-folio').value;
+      const rfc = document.getElementById('fac-rfc').value.toUpperCase();
+      const raz = document.getElementById('fac-razon').value;
+      const cp = document.getElementById('fac-cp').value;
+      const wa = (suc === "Cañotal") ? "529987509392" : "529987509351";
+      const msg = `🧾 *SOLICITUD CFDI 4.0*%0A%0A📍 *Sucursal:* ${suc}%0A🎟️ *Ticket:* ${fol}%0A🏢 *RFC:* ${rfc}%0A🏷️ *Razón:* ${raz}%0A📮 *CP:* ${cp}`;
+      window.open(`https://wa.me/${wa}?text=${msg}`, '_blank');
+      cerrarModalFactura();
+    }
+
+    verificarHorarios();
+  </script>
+</body>
+</html>
       
