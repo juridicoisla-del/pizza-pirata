@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizza Pirata Isla Mujeres — Menú Oficial y Facturación</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pirata: { sol: '#E85D04', amarillo: '#FFBA08', madera: '#D48B46' },
+            tema: {
+              bg: 'var(--color-bg)', surface: 'var(--color-surface)',
+              card: 'var(--color-card)', primary: 'var(--color-primary)',
+              accent: 'var(--color-accent)', border: 'var(--color-border)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --color-bg: #0F141C; --color-surface: #17212F; --color-card: #1F2C3F;
+      --color-primary: #FFBA08; --color-accent: #E85D04; --color-border: #33445C;
+    }
+    [data-theme="nino"] { --color-bg: #0F1A24; --color-surface: #162B3D; --color-card: #1E3B54; --color-primary: #38BDF8; --color-accent: #F43F5E; --color-border: #2563EB; }
+    [data-theme="madres"] { --color-bg: #1C0F17; --color-surface: #2E1524; --color-card: #401B32; --color-primary: #FB7185; --color-accent: #F43F5E; --color-border: #831843; }
+    [data-theme="maestro"] { --color-bg: #0D1814; --color-surface: #142821; --color-card: #1C382E; --color-primary: #FBBF24; --color-accent: #10B981; --color-border: #047857; }
+    [data-theme="padre"] { --color-bg: #0F172A; --color-surface: #1E293B; --color-card: #334155; --color-primary: #38BDF8; --color-accent: #F59E0B; --color-border: #475569; }
+    [data-theme="abogado"] { --color-bg: #0D1117; --color-surface: #161D27; --color-card: #202937; --color-primary: #E2B714; --color-accent: #C59B27; --color-border: #374151; }
+    [data-theme="patrias"] { --color-bg: #0A140F; --color-surface: #12241A; --color-card: #1B3527; --color-primary: #22C55E; --color-accent: #EF4444; --color-border: #15803D; }
+    [data-theme="muertos"] { --color-bg: #160D1A; --color-surface: #27142E; --color-card: #381A43; --color-primary: #F97316; --color-accent: #A855F7; --color-border: #6B21A8; }
+    [data-theme="navidad"] { --color-bg: #0D1814; --color-surface: #142E24; --color-card: #1B4032; --color-primary: #FBBF24; --color-accent: #E11D48; --color-border: #065F46; }
+    [data-theme="reyes"] { --color-bg: #130E20; --color-surface: #201736; --color-card: #2E214E; --color-primary: #FACC15; --color-accent: #9333EA; --color-border: #581C87; }
+    [data-theme="amor"] { --color-bg: #1A0D15; --color-surface: #2E1424; --color-card: #421B34; --color-primary: #FB7185; --color-accent: #E11D48; --color-border: #9F1239; }
+
+    @keyframes pirate-sway {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-4deg) scale(1.03); }
+      75% { transform: rotate(4deg) scale(1.03); }
+      100% { transform: rotate(0deg); }
+    }
+    .animate-sway:hover, .animate-sway:active { animation: pirate-sway 0.8s ease-in-out infinite; }
+    .bg-patron { background-color: var(--color-bg); background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px; }
+  </style>
+</head>
+<body class="bg-patron text-gray-100 font-sans antialiased">
+
+  <!-- Selector flotante de efemérides -->
+  <div class="fixed bottom-6 right-6 z-50">
+    <button onclick="toggleTemas()" class="bg-tema-primary text-black w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl border-2 border-white/30" title="Cambiar Tradición">🎨</button>
+    <div id="panelTemas" class="hidden absolute bottom-16 right-0 bg-tema-surface border-2 border-tema-primary p-4 rounded-3xl shadow-2xl w-72 max-h-[75vh] overflow-y-auto">
+      <span class="text-xs font-black uppercase text-tema-primary tracking-wider block mb-2">Efemérides México 🇲🇽</span>
+      <div class="space-y-1 text-xs font-bold">
+        <button onclick="setTema('default', '🏴‍☠️', '¡Bienvenidos a Bordo!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">🏴‍☠️ Original Pizza Pirata</button>
+        <button onclick="setTema('reyes', '👑', '¡Feliz Día de Reyes!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">👑 Día de Reyes</button>
+        <button onclick="setTema('amor', '❤️', '¡Celebrando el Amor Isleño!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">❤️ San Valentín</button>
+        <button onclick="setTema('nino', '🎈', '¡Feliz Día del Niño!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">🎈 Día del Niño</button>
+        <button onclick="setTema('madres', '💐', '¡Felicidades Mamá Pirata!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">💐 Día de las Madres</button>
+        <button onclick="setTema('maestro', '📚', '¡Feliz Día del Maestro!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">📚 Día del Maestro</button>
+        <button onclick="setTema('padre', '👔', '¡Felicidades Capitán Papá!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">👔 Día del Padre</button>
+        <button onclick="setTema('abogado', '⚖️', '¡Honor al Gremio Jurídico!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">⚖️ Día del Abogado</button>
+        <button onclick="setTema('patrias', '🇲🇽', '¡Viva México en la Isla!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">🇲🇽 Fiestas Patrias</button>
+        <button onclick="setTema('muertos', '💀', '¡Celebrando Día de Muertos!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">💀 Día de Muertos</button>
+        <button onclick="setTema('navidad', '🎄', '¡Feliz Navidad y Próspero Año!')" class="w-full text-left p-2 rounded-xl bg-black/40 hover:bg-black/60">🎄 Navidad y Año Nuevo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-tema-surface/95 backdrop-blur border-b border-tema-border h-20 flex items-center justify-between px-6">
+    <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      <img src="logo-pizza-pirata.png" onerror="this.src='https://images.smart.wtf/pizza-pirata-logo.png'" alt="Logo" class="w-14 h-14 object-contain animate-sway">
+      <div>
+        <span class="text-xl sm:text-2xl font-black text-white">PIZZA <span class="text-tema-primary">PIRATA</span></span>
+        <span class="block text-[10px] uppercase tracking-widest text-tema-primary font-bold">Isla Mujeres · POS Oficial</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="ejecutarPedido()" class="bg-tema-accent text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-lg flex items-center gap-2">
+        <i class="fa-solid fa-pizza-slice"></i>
+        <span>Pide en Línea</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="py-14 sm:py-20 text-center border-b border-tema-border px-4">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-tema-primary/10 border border-tema-primary/30 text-tema-primary text-xs font-bold uppercase mb-6">
+      <span id="badge-efemeride">🏴‍☠️ ¡Bienvenidos a Bordo!</span> · 5% Cashback
+    </div>
+    <div class="flex justify-center mb-6">
+      <img src="logo-pizza-pirata.png" onerror="this.src='https://images.smart.wtf/pizza-pirata-logo.png'" alt="Pizza Pirata" class="w-36 h-36 sm:w-44 sm:h-44 object-contain animate-sway cursor-pointer" onclick="toggleTemas()">
+    </div>
+    <h1 class="text-4xl sm:text-6xl font-black text-white mb-4">El Sabor de <span class="text-tema-primary underline decoration-tema-accent">Isla Mujeres</span></h1>
+    <p class="text-gray-300 max-w-xl mx-auto mb-8">Pizzas familiares con orilla de queso rellena, Bakes horneados al momento y servicio a domicilio.</p>
+    <div class="flex justify-center gap-4">
+      <button onclick="abrirModalSucursal()" class="bg-tema-primary text-black px-8 py-3.5 rounded-xl font-extrabold text-base shadow-xl">
+        <i class="fa-solid fa-mobile-screen"></i> Ordenar en App
+      </button>
+      <button onclick="abrirModalFactura()" class="bg-tema-surface border border-tema-border text-white px-6 py-3.5 rounded-xl font-bold text-base">
+        <i class="fa-solid fa-file-invoice text-tema-primary"></i> Solicitar Factura
+      </button>
+    </div>
+  </section>
+
+  <!-- Sucursales Oficiales -->
+  <section class="py-16 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-black text-white mb-2">Sucursales Oficiales</h2>
+      <p class="text-gray-400 text-sm">Horarios calculados en tiempo real y conexión con la cocina</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Salina Chica -->
+      <div class="bg-tema-surface rounded-3xl p-7 border-2 border-tema-primary shadow-2xl relative">
+        <span class="absolute -top-3 left-8 bg-tema-primary text-black text-xs font-black uppercase px-3.5 py-0.5 rounded-full">Matriz Principal</span>
+        <div class="flex justify-between items-start mb-4 mt-2">
+          <h3 class="text-2xl font-black text-white">Salina Chica</h3>
+          <span id="status-salina" class="text-xs font-bold px-3 py-1 rounded-full bg-black/40 border border-tema-border">Calculando...</span>
+        </div>
+        <p class="text-gray-300 text-sm mb-4">Av. Jesús Martínez Ross No. 181</p>
+        <div class="bg-black/40 p-3 rounded-xl text-xs space-y-1 mb-6 text-gray-300">
+          <p><i class="fa-regular fa-clock text-tema-primary mr-1"></i> 4:00 PM - 10:00 PM (Descanso: Martes)</p>
+          <p><i class="fa-solid fa-phone text-blue-400 mr-1"></i> Tel: 998 274 3569 | WA: 998 750 9351</p>
+        </div>
+        <button onclick="irAPedidoInteligente('salina-chica')" class="w-full bg-tema-primary text-black py-3 rounded-xl font-black mb-2">Pedir en Salina Chica</button>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="https://wa.me/529987509351" target="_blank" class="bg-green-600 text-center py-2 rounded-lg text-xs font-bold text-white"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+          <button onclick="marcarFavorita('salina-chica', 'Salina Chica')" class="bg-tema-card py-2 rounded-lg text-xs font-bold text-gray-300 border border-tema-border">⭐ Favorita</button>
+        </div>
+      </div>
+
+      <!-- Cañotal -->
+      <div class="bg-tema-surface rounded-3xl p-7 border border-tema-border shadow-2xl relative">
+        <span class="absolute -top-3 left-8 bg-tema-surface border border-tema-border text-tema-primary text-xs font-black uppercase px-3.5 py-0.5 rounded-full">Sucursal Cañotal</span>
+        <div class="flex justify-between items-start mb-4 mt-2">
+          <h3 class="text-2xl font-black text-white">Cañotal</h3>
+          <span id="status-canotal" class="text-xs font-bold px-3 py-1 rounded-full bg-black/40 border border-tema-border">Calculando...</span>
+        </div>
+        <p class="text-gray-300 text-sm mb-4">Calle Colibrí Local 30, Mercado El Cañotal</p>
+        <div class="bg-black/40 p-3 rounded-xl text-xs space-y-1 mb-6 text-gray-300">
+          <p><i class="fa-regular fa-clock text-tema-primary mr-1"></i> 6:00 PM - 11:00 PM (Descanso: Lunes)</p>
+          <p><i class="fa-solid fa-phone text-blue-400 mr-1"></i> Tel: 998 274 8823 | WA: 998 750 9392</p>
+        </div>
+        <button onclick="irAPedidoInteligente('canotal')" class="w-full bg-tema-accent text-white py-3 rounded-xl font-black mb-2">Pedir en Cañotal</button>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="https://wa.me/529987509392" target="_blank" class="bg-green-600 text-center py-2 rounded-lg text-xs font-bold text-white"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+          <button onclick="marcarFavorita('canotal', 'Cañotal')" class="bg-tema-card py-2 rounded-lg text-xs font-bold text-gray-300 border border-tema-border">⭐ Favorita</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catálogo de Pizzas -->
+  <section class="py-16 px-4 max-w-7xl mx-auto border-t border-tema-border">
+    <h2 class="text-3xl font-black text-white mb-6">Pizzas de la Casa (Familiar 8 rebanadas)</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="pizza-cards"></div>
+  </section>
+
+  <!-- Modales -->
+  <div id="modalSucursal" class="fixed inset-0 z-50 bg-black/80 hidden flex items-center justify-center p-4">
+    <div class="bg-tema-surface border-2 border-tema-primary rounded-3xl max-w-md w-full p-6 text-center">
+      <h3 class="text-xl font-black text-white mb-4">Selecciona tu Sucursal</h3>
+      <div class="space-y-3">
+        <button onclick="seleccionarSucursal('salina-chica')" class="w-full bg-black/40 p-4 rounded-xl border border-tema-border text-left hover:border-tema-primary">
+          <span class="font-bold text-white block">Salina Chica (Matriz)</span>
+          <span class="text-xs text-gray-400">4:00 PM - 10:00 PM</span>
+        </button>
+        <button onclick="seleccionarSucursal('canotal')" class="w-full bg-black/40 p-4 rounded-xl border border-tema-border text-left hover:border-tema-accent">
+          <span class="font-bold text-white block">Cañotal</span>
+          <span class="text-xs text-gray-400">6:00 PM - 11:00 PM</span>
+        </button>
+      </div>
+      <button onclick="cerrarModalSucursal()" class="mt-4 text-xs text-gray-400">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="modalFactura" class="fixed inset-0 z-50 bg-black/85 hidden flex items-center justify-center p-4">
+    <div class="bg-tema-surface border-2 border-tema-primary rounded-3xl max-w-md w-full p-6">
+      <h3 class="text-xl font-black text-white mb-2 text-center">Facturación CFDI 4.0</h3>
+      <form onsubmit="enviarFactura(event)" class="space-y-3 text-xs">
+        <select id="fac-sucursal" class="w-full bg-black/50 p-2.5 rounded-xl border border-tema-border text-white">
+          <option value="Salina Chica">Salina Chica</option>
+          <option value="Cañotal">Cañotal</option>
+        </select>
+        <input id="fac-folio" type="text" placeholder="Folio del Ticket" required class="w-full bg-black/50 p-2.5 rounded-xl border border-tema-border text-white">
+        <input id="fac-rfc" type="text" placeholder="RFC" required class="w-full bg-black/50 p-2.5 rounded-xl border border-tema-border text-white uppercase">
+        <input id="fac-razon" type="text" placeholder="Razón Social" required class="w-full bg-black/50 p-2.5 rounded-xl border border-tema-border text-white">
+        <input id="fac-cp" type="text" placeholder="Código Postal" required class="w-full bg-black/50 p-2.5 rounded-xl border border-tema-border text-white">
+        <button type="submit" class="w-full bg-tema-primary text-black font-extrabold py-3 rounded-xl mt-2">Enviar Solicitud a WhatsApp</button>
+        <button type="button" onclick="cerrarModalFactura()" class="w-full text-center text-gray-400 pt-2">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const baseUrlPWA = "https://ais-pre-467uxjo6ll46wtfnnvji5v-363910849303.us-west1.run.app/pedir/";
+    const pizzas = [
+      { name: "Pepperoni", desc: "Queso mozzarella y pepperoni.", price: 209 },
+      { name: "Hawaiana", desc: "Queso mozzarella, jamón y piña.", price: 229 },
+      { name: "Vegetariana", desc: "Mozzarella, champiñones, pimiento, aceitunas y cebolla.", price: 229 },
+      { name: "Jamón", desc: "Queso mozzarella y jamón de pierna.", price: 209 },
+      { name: "Queso", desc: "Queso mozzarella clásico fundido.", price: 189 },
+      { name: "Pastor", desc: "Mozzarella, carne al pastor, piña y cebolla.", price: 269 },
+      { name: "Camarones", desc: "Mozzarella, camarones, tocino, pimiento y cebolla.", price: 369 },
+      { name: "5 Quesos", desc: "Mozzarella, cheddar, Monterrey Jack, Chihuahua y asadero.", price: 229 },
+      { name: "Chicken Bake Pizza", desc: "Pollo, tocino, mozzarella con orilla de queso incluida.", price: 319 },
+      { name: "3 Carnes", desc: "Mozzarella, tocino, pepperoni y salchicha de res.", price: 229 },
+      { name: "Europea", desc: "Pepperoni, champiñones, pimiento, cebolla y salchicha.", price: 249 },
+      { name: "4 Estaciones", desc: "1/4 Queso, 1/4 Pepperoni, 1/4 Hawaiana y 1/4 3 Carnes.", price: 249 },
+      { name: "Cheddar", desc: "Salsa cheddar, extra mozzarella y extra pepperoni.", price: 279 },
+      { name: "Mexicana", desc: "Mozzarella, chorizo mexicano, jalapeño y cebolla.", price: 249 }
+    ];
+
+    const container = document.getElementById('pizza-cards');
+    pizzas.forEach(p => {
+      container.innerHTML += `
+        <div class="bg-tema-surface p-5 rounded-2xl border border-tema-border flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-white">${p.name}</h3>
+              <span class="text-sm font-black text-tema-primary">$${p.price}</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-4">${p.desc}</p>
+          </div>
+          <button onclick="abrirModalSucursal()" class="bg-black/40 hover:bg-tema-accent py-2 rounded-lg text-xs font-bold text-white border border-tema-border">Pedir</button>
+        </div>
+      `;
+    });
+
+    function verificarHorarios() {
+      const ahora = new Date();
+      const dia = ahora.getDay();
+      const min = ahora.getHours() * 60 + ahora.getMinutes();
+      document.getElementById('status-salina').innerHTML = (dia === 2) ? '<span class="text-red-400">Descanso</span>' : (min >= 960 && min < 1320) ? '<span class="text-green-400">Abierto</span>' : '<span class="text-amber-400">Cerrado</span>';
+      document.getElementById('status-canotal').innerHTML = (dia === 1) ? '<span class="text-red-400">Descanso</span>' : (min >= 1080 && min < 1380) ? '<span class="text-green-400">Abierto</span>' : '<span class="text-amber-400">Cerrado</span>';
+    }
+
+    function irAPedidoInteligente(slug) {
+      const ahora = new Date();
+      const dia = ahora.getDay();
+      const min = ahora.getHours() * 60 + ahora.getMinutes();
+      const sAbierta = (dia !== 2) && (min >= 960 && min < 1320);
+      const cAbierta = (dia !== 1) && (min >= 1080 && min < 1380);
+
+      if (slug === 'salina-chica' && !sAbierta && cAbierta) {
+        alert("Salina Chica está cerrada. Te redirigimos a Cañotal que está abierta.");
+        window.open(baseUrlPWA + 'canotal', '_blank');
+      } else if (slug === 'canotal' && !cAbierta && sAbierta) {
+        alert("Cañotal está cerrada. Te redirigimos a Salina Chica que está abierta.");
+        window.open(baseUrlPWA + 'salina-chica', '_blank');
+      } else {
+        window.open(baseUrlPWA + slug, '_blank');
+      }
+    }
+
+    function toggleTemas() { document.getElementById('panelTemas').classList.toggle('hidden'); }
+    function setTema(t, i, m) {
+      const root = document.getElementById('html-root');
+      if (t === 'default') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+      document.getElementById('badge-efemeride').innerText = `${i} ${m}`;
+      document.getElementById('panelTemas').classList.add('hidden');
+    }
+
+    function abrirModalSucursal() { document.getElementById('modalSucursal').classList.remove('hidden'); }
+    function cerrarModalSucursal() { document.getElementById('modalSucursal').classList.add('hidden'); }
+    function abrirModalFactura() { document.getElementById('modalFactura').classList.remove('hidden'); }
+    function cerrarModalFactura() { document.getElementById('modalFactura').classList.add('hidden'); }
+    function ejecutarPedido() { abrirModalSucursal(); }
+    function seleccionarSucursal(s) { cerrarModalSucursal(); irAPedidoInteligente(s); }
+
+    function enviarFactura(e) {
+      e.preventDefault();
+      const suc = document.getElementById('fac-sucursal').value;
+      const fol = document.getElementById('fac-folio').value;
+      const rfc = document.getElementById('fac-rfc').value.toUpperCase();
+      const raz = document.getElementById('fac-razon').value;
+      const cp = document.getElementById('fac-cp').value;
+      const wa = (suc === "Cañotal") ? "529987509392" : "529987509351";
+      const msg = `🧾 *SOLICITUD CFDI 4.0*%0A%0A📍 *Sucursal:* ${suc}%0A🎟️ *Ticket:* ${fol}%0A🏢 *RFC:* ${rfc}%0A🏷️ *Razón:* ${raz}%0A📮 *CP:* ${cp}`;
+      window.open(`https://wa.me/${wa}?text=${msg}`, '_blank');
+      cerrarModalFactura();
+    }
+
+    verificarHorarios();
+  </script>
+</body>
+</html>
